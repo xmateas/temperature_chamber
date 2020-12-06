@@ -47,9 +47,9 @@ def read_temp():
         return temp_c
 
 
-def data_writer(temperature):
+def data_writer(temperature, vstup=None):
     dir = 'data/'
     with open((dir + ('data.csv')), 'a', newline='') as csvfile:
         spamwriter = csv.writer(csvfile)
-        spamwriter.writerow([temperature])
+        spamwriter.writerow([temperature, vstup])
 

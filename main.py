@@ -2,7 +2,7 @@ import time
 import RPi.GPIO as GPIO
 import regulators
 
-if __name__ == 'reg_process':
+if __name__ == '__main__':
 
     try:
         # os.system('modprobe w1-gpio')
@@ -24,14 +24,16 @@ if __name__ == 'reg_process':
         while True:
 
             temperature = regulators.read_temp()
-            regulators.data_writer(temperature)
+
             print(temperature)
 
             if regulator.regulation(temperature):
                 GPIO.output(18,GPIO.HIGH)
+                vstup = 1
             else:
                 GPIO.output(18, GPIO.LOW)
-
+                vstup = 0
+            regulators.data_writer(temperature,vstup)
             time.sleep(2)
     except KeyboardInterrupt:
         GPIO.output(18, GPIO.LOW)
