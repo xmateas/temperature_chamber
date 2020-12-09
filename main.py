@@ -50,5 +50,5 @@ if __name__ == '__main__':
             pass
 
         final_temp = regulators.read_temp()
-        print('Teplota po vetrani: {}'.format(final_temp))
+        print('Teplota v komore: {}'.format(final_temp))
         GPIO.cleanup()
