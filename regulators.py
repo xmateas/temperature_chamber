@@ -53,3 +53,9 @@ def data_writer(temperature, vstup=None):
         spamwriter = csv.writer(csvfile)
         spamwriter.writerow([temperature, vstup])
 
+
+def confi_writer(conf1):
+    dir = 'data/'
+    with open((dir + ('conf.csv')), 'a', newline='') as csvfile:
+        spamwriter = csv.writer(csvfile)
+        spamwriter.writerow(['Perioda vzorkovania', conf1])

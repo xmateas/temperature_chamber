@@ -5,21 +5,20 @@ import regulators
 if __name__ == '__main__':
 
     try:
-        # os.system('modprobe w1-gpio')
-        # os.system('modprobe w1-therm')
-        #
-        # base_dir = '/sys/bus/w1/devices/'
-        # device_folder = glob.glob(base_dir + '28*')[0]
-        # device_file = device_folder + '/w1_slave'  #### konfiguracia teplomera
 
         GPIO.setmode(GPIO.BCM)
         GPIO.setwarnings(False)
         GPIO.setup(23, GPIO.OUT) # ventilator
         GPIO.setup(18, GPIO.OUT) # vyhrevne teleso
-
+        ####
+        ### Configuration ###
+        ####
         reference = int(input('Napis pozadovanu teplotu [25°C - 65°C]: '))
-
+        sampling_period = int(input('Napis periodu vzorkovania [s]: '))
+        regulators.confi_writer(sampling_period)
         regulator = regulators.switch(reference)
+        ####
+
 
         while True:
 
@@ -41,10 +40,14 @@ if __name__ == '__main__':
 
     finally:
         time.sleep(2)
-        GPIO.output(23, GPIO.HIGH)
-        time.sleep(60)
-        GPIO.output(23, GPIO.LOW)
-        GPIO.cleanup()
+        ans = input('Chces vetrat? [Y/N]: ')
+        if ans == 'Y' or ans == 'y':
+            air_time = int(input('Kolko sekund? [s]: '))
+            GPIO.output(23, GPIO.HIGH)
+            time.sleep(air_time)
+            GPIO.output(23, GPIO.LOW)
+        else:
+            pass
 
         final_temp = regulators.read_temp()
         print('Teplota po vetrani: {}'.format(final_temp))
