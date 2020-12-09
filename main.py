@@ -1,11 +1,12 @@
 import time
 import RPi.GPIO as GPIO
 import regulators
+import os
 
 if __name__ == '__main__':
 
     try:
-
+        os.remove('data/data.csv')
         GPIO.setmode(GPIO.BCM)
         GPIO.setwarnings(False)
         GPIO.setup(23, GPIO.OUT) # ventilator
@@ -15,7 +16,7 @@ if __name__ == '__main__':
         ####
         reference = int(input('Napis pozadovanu teplotu [25°C - 65°C]: '))
         sampling_period = int(input('Napis periodu vzorkovania [s]: '))
-        regulators.confi_writer(sampling_period)
+        regulators.confi_writer(sampling_period,reference)
         regulator = regulators.switch(reference)
         ####
 
