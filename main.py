@@ -34,7 +34,7 @@ if __name__ == '__main__':
                 GPIO.output(18, GPIO.LOW)
                 vstup = 0
             regulators.data_writer(temperature,vstup)
-            time.sleep(2)
+            time.sleep(sampling_period)
     except KeyboardInterrupt:
         GPIO.output(18, GPIO.LOW)
         print('Proces je ukonceny prebehne vetranie komory')
