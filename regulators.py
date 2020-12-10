@@ -8,14 +8,31 @@ class switch:
     def __init__(self,ref):
         self.ref = ref
 
-    def regulation(self,input):
-        if self.ref - input > 0:
+    def regulation(self,state):
+        if self.ref - state > 0:
             print('Zapnut')
             return 100
         else:
             print('Vypnut')
             return 0
 ###
+### P regulator ###
+
+class P_regulator:
+    def __init__(self,ref,Kp):
+        self.ref = ref
+        self.Kp = Kp
+
+    def regulation(self,state):
+
+        error = self.ref - state
+        u = error*self.Kp
+
+        norm_u = max(min(100, u), 0)
+
+        return norm_u
+
+
 
 
 
@@ -47,6 +64,8 @@ def read_temp():
         return temp_c
 
 
+
+### Data logging
 def data_writer(temperature, vstup=None):
     dir = 'data/'
     with open((dir + ('data.csv')), 'a', newline='') as csvfile:
@@ -54,10 +73,22 @@ def data_writer(temperature, vstup=None):
         spamwriter.writerow([temperature, vstup])
 
 
-def confi_writer(conf1,conf2):
+def confi_writer(conf1,conf2,conf3=None,conf4=None,conf5=None):
     dir = 'data/'
     with open((dir + ('conf.csv')), 'w', newline='') as csvfile:
         spamwriter = csv.writer(csvfile)
         spamwriter.writerow(['Konfiguracny parameter', 'Hodnota'])
         spamwriter.writerow(['Perioda vzorkovania', conf1])
         spamwriter.writerow(['Referencia', conf2])
+
+        if conf3:
+            spamwriter.writerow(['Kp', conf3])
+
+
+
+
+
+
+
+
+

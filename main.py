@@ -17,17 +17,23 @@ if __name__ == '__main__':
         GPIO.setup(18, GPIO.OUT) # vyhrevne teleso
         p = GPIO.PWM(18,100) # pracujeme s PWM
         p.start(0)
-        ####
-        ### Configuration ###
-        ####
+        ###
+        ## Configuration ###
+        ###
+        option = input('Napis typ regulator [S/P]: ')
 
+        if option == 'S' or option =='s':
+            reference = int(input('Napis pozadovanu teplotu [25°C - 65°C]: '))
+            sampling_period = int(input('Napis periodu vzorkovania [s]: '))
+            regulators.confi_writer(sampling_period,reference)
+            regulator = regulators.switch(reference)
 
-        reference = int(input('Napis pozadovanu teplotu [25°C - 65°C]: '))
-        sampling_period = int(input('Napis periodu vzorkovania [s]: '))
-        regulators.confi_writer(sampling_period,reference)
-        regulator = regulators.switch(reference)
-        ####
-
+        elif option == 'P' or option =='p':
+            reference = int(input('Napis pozadovanu teplotu [25°C - 65°C]: '))
+            sampling_period = int(input('Napis periodu vzorkovania [s]: '))
+            Kp = int(input('Napis hodnotu zosilnenia Kp: '))
+            regulators.confi_writer(sampling_period, reference,Kp)
+            regulator = regulators.P_regulator(reference,Kp)
 
         while True:
 
@@ -43,6 +49,7 @@ if __name__ == '__main__':
         p.stop()
         GPIO.output(18, GPIO.LOW)
         print('Proces je ukonceny prebehne vetranie komory')
+
 
     finally:
         p.stop()
