@@ -11,10 +11,10 @@ class switch:
     def regulation(self,input):
         if self.ref - input > 0:
             print('Zapnut')
-            return True
+            return 100
         else:
             print('Vypnut')
-            return False
+            return 0
 ###
 
 
