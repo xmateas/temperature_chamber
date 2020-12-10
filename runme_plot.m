@@ -30,7 +30,9 @@ legend('Temperature °C','Reference','location','southeast')
 
 subplot(2,1,2)
 
-stairs(t,input*100,'b--','linewidth',2)
+stairs(t,input,'b--','linewidth',2),hold on
+plot([t(1),t(end)],[100,100],'k--')
+plot([t(1),t(end)],[0,0],'k--')
 xlabel('time [s]')
 ylabel('Input %')
 grid on
