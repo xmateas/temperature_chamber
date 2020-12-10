@@ -66,11 +66,11 @@ def read_temp():
 
 
 ### Data logging
-def data_writer(temperature, vstup=None):
+def data_writer(temperature, vstup=None,referencia=None):
     dir = 'data/'
     with open((dir + ('data.csv')), 'a', newline='') as csvfile:
         spamwriter = csv.writer(csvfile)
-        spamwriter.writerow([temperature, vstup])
+        spamwriter.writerow([temperature, vstup,referencia])
 
 
 def confi_writer(conf1,conf2,conf3=None,conf4=None,conf5=None):

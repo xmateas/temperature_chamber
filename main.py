@@ -43,7 +43,7 @@ if __name__ == '__main__':
 
             vstup = regulator.regulation(temperature)
             p.ChangeDutyCycle(vstup)
-            regulators.data_writer(temperature,vstup)
+            regulators.data_writer(temperature,vstup,reference)
             time.sleep(sampling_period)
     except KeyboardInterrupt:
         p.stop()
