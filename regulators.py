@@ -2,6 +2,10 @@ import csv
 import os
 import glob
 import time
+# import termios
+# import tty
+# import sys
+# import sys, termios, tty, os, time
 
 ### ON/OFF regulator ###
 class switch:
@@ -28,6 +32,26 @@ class P_regulator:
         error = self.ref - state
         u = error*self.Kp
 
+        norm_u = max(min(100, u), 0)
+
+        return norm_u
+
+class PI_regulator:
+    def __init__(self, ref, Kp,Ki):
+        self.ref = ref
+        self.Kp = Kp
+        self.Ki = Ki
+        self.error_list = []
+        self.error = float
+
+    def regulation(self, state):
+        self.error = self.ref - state
+        self.error_list.append(self.error)
+
+        u_i = sum(self.error_list)*self.Ki
+        u_p = self.error * self.Kp
+
+        u = u_p + u_i
         norm_u = max(min(100, u), 0)
 
         return norm_u
@@ -83,6 +107,21 @@ def confi_writer(conf1,conf2,conf3=None,conf4=None,conf5=None):
 
         if conf3:
             spamwriter.writerow(['Kp', conf3])
+            if conf4:
+                spamwriter.writerow(['Ki', conf4])
+# def key_input():
+#     ch = None
+#     fd = sys.stdin.fileno()
+#     old_settings = termios.tcgetattr(fd)
+#
+#     tty.setraw(sys.stdin.fileno())
+#     ch = sys.stdin.read(1)
+#     termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
+#
+#     if ch:
+#         return ch
+#     else:
+#         return False
 
 
 

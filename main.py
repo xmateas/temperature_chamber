@@ -20,7 +20,7 @@ if __name__ == '__main__':
         ###
         ## Configuration ###
         ###
-        option = input('Napis typ regulator [S/P]: ')
+        option = input('Napis typ regulator [S/P/PI]: ')
 
         if option == 'S' or option =='s':
             reference = int(input('Napis pozadovanu teplotu [25°C - 65°C]: '))
@@ -35,16 +35,32 @@ if __name__ == '__main__':
             regulators.confi_writer(sampling_period, reference,Kp)
             regulator = regulators.P_regulator(reference,Kp)
 
+        elif option == 'PI' or option == 'pi':
+            reference = int(input('Napis pozadovanu teplotu [25°C - 65°C]: '))
+            sampling_period = int(input('Napis periodu vzorkovania [s]: '))
+            Kp = float(input('Napis hodnotu zosilnenia Kp: '))
+            Ki = float(input('Napis hodnotu zosilnenia Ki: '))
+            regulators.confi_writer(sampling_period, reference, Kp, Ki)
+            regulator = regulators.PI_regulator(reference, Kp, Ki)
+
+        pressedKey = None
         while True:
 
-            temperature = regulators.read_temp()
 
-            print(str(temperature) + '°C')
 
-            vstup = regulator.regulation(temperature)
-            p.ChangeDutyCycle(vstup)
-            regulators.data_writer(temperature,vstup,reference)
-            time.sleep(sampling_period)
+            temperature = regulators.read_temp()  # citanie teploty
+            print(str(temperature) + '°C')  # vypisovanie teploty do command window
+
+            vstup = regulator.regulation(temperature)  # vypocitanie akcneho zasahu
+            p.ChangeDutyCycle(vstup)  # aplikovanie akcneho zasahu
+
+            regulators.data_writer(temperature, vstup, reference)  # logovanie udajov
+            time.sleep(sampling_period)  # perioda vzorkovania
+
+
+
+
+
     except KeyboardInterrupt:
         p.stop()
         GPIO.output(18, GPIO.LOW)
