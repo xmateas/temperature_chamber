@@ -60,6 +60,52 @@ class PI_regulator:
 
         return norm_u,u_p,u_i
 
+### PD regulator ###
+
+class PD_regulator:
+    def __init__(self, ref, Kp, Kd):
+        self.ref = ref
+        self.Kp = Kp
+        self.Kd = Kd
+        self.error_list = [0]
+        self.error = float
+
+    def regulation(self, state):
+        self.error = self.ref - state
+        self.error_list.append(self.error)
+
+        u_d = (self.error_list[-1] - self.error_list[-2]) * self.Kd
+        u_p = self.error * self.Kp
+
+        u = u_p + u_d
+        norm_u = max(min(100, u), 0)
+
+        return norm_u, u_p, u_d
+
+### PID regulator ###
+
+class PID_regulator:
+    def __init__(self, ref, Kp, Ki, Kd):
+        self.ref = ref
+        self.Kp = Kp
+        self.Ki = Ki
+        self.Kd = Kd
+        self.error_list = [0]
+        self.error = float
+
+    def regulation(self, state):
+        self.error = self.ref - state
+        self.error_list.append(self.error)
+
+        u_d = (self.error_list[-1] - self.error_list[-2]) * self.Kd
+        u_i = sum(self.error_list)*self.Ki
+        u_p = self.error * self.Kp
+
+        u = u_p + u_i + u_d
+        norm_u = max(min(100, u), 0)
+
+        return norm_u, u_p, u_d, u_i
+
 
 
 
@@ -111,8 +157,10 @@ def confi_writer(conf1,conf2,conf3=None,conf4=None,conf5=None):
 
         if conf3:
             spamwriter.writerow(['Kp', conf3])
-            if conf4:
-                spamwriter.writerow(['Ki', conf4])
+        if conf4:
+            spamwriter.writerow(['Ki', conf4])
+        if conf5:
+            spamwriter.writerow(['Kd', conf5])
 # def key_input():
 #     ch = None
 #     fd = sys.stdin.fileno()
