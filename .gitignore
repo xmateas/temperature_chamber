@@ -3,3 +3,7 @@ __pycache__
 test.py
 data
 *.asv
+*.slxc
+simulation.m
+*.xml
+.*autosave
