@@ -97,7 +97,7 @@ class PID_regulator:
         self.error = self.ref - state
         self.error_list.append(self.error)
 
-        u_d = (self.error_list[-1] - self.error_list[-2]) * self.Kd
+        u_d = (self.error_list[-2]) * self.Kd
         u_i = sum(self.error_list)*self.Ki
         u_p = self.error * self.Kp
 
