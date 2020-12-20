@@ -43,15 +43,13 @@ if __name__ == '__main__':
             regulators.confi_writer(sampling_period, reference, Kp, Ki)
             regulator = regulators.PI_regulator(reference, Kp, Ki)
 
-        pressedKey = None
         while True:
 
-
-
             temperature = regulators.read_temp()  # citanie teploty
-            print(str(temperature) + '°C')  # vypisovanie teploty do command window
+            # print(str(temperature) + '°C')  # vypisovanie teploty do command window
 
-            vstup = regulator.regulation(temperature)  # vypocitanie akcneho zasahu
+            vstup,p_zlozka,i_zlozka = regulator.regulation(temperature)  # vypocitanie akcneho zasahu
+            print(str(temperature) + '°C' + ' P zlozka:' + str(p_zlozka) + ' I_zlozka:' + str(round(i_zlozka,2)) + ' Suma: ' + str(round(i_zlozka + p_zlozka, 2)))  #iba pre debugovanie
             p.ChangeDutyCycle(vstup)  # aplikovanie akcneho zasahu
 
             regulators.data_writer(temperature, vstup, reference)  # logovanie udajov

@@ -26,15 +26,19 @@ class P_regulator:
     def __init__(self,ref,Kp):
         self.ref = ref
         self.Kp = Kp
+        self.error_list = []
+        self.error = float
 
     def regulation(self,state):
+        self.error = self.ref - state
+        u_p = self.error*self.Kp
 
-        error = self.ref - state
-        u = error*self.Kp
-
+        u = u_p
         norm_u = max(min(100, u), 0)
 
         return norm_u
+
+### PI regulator ###
 
 class PI_regulator:
     def __init__(self, ref, Kp,Ki):
@@ -54,7 +58,7 @@ class PI_regulator:
         u = u_p + u_i
         norm_u = max(min(100, u), 0)
 
-        return norm_u
+        return norm_u,u_p,u_i
 
 
 
